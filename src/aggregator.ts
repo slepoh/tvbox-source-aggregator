@@ -421,13 +421,15 @@ async function processMacCMSSources(
   let validEntries: MacCMSSourceEntry[];
   let speedMap: Map<string, number> | undefined;
 
-  if (config.workerBaseUrl) {
-    // CF 版：跳过验证，代理本身就是可用性保证
-    console.log('[aggregation] CF mode: skipping MacCMS validation, using proxy URLs');
+  const edgeProxiesRaw = !config.workerBaseUrl ? await storage.get(KV_EDGE_PROXIES) : null;
+
+  if (config.workerBaseUrl || edgeProxiesRaw) {
+    // CF 版或本地有 edge proxy：跳过验证，运行时代理兜底
+    console.log(`[aggregation] Skipping MacCMS validation (${config.workerBaseUrl ? 'CF proxy' : 'edge proxy configured'})`);
     validEntries = entries;
   } else {
-    // 本地版：并发验证，过滤不可达站点，收集延迟
-    console.log('[aggregation] Local mode: validating MacCMS sources...');
+    // 本地版无 edge proxy：并发验证，过滤不可达站点
+    console.log('[aggregation] Local mode (no edge proxy): validating MacCMS sources...');
     const result = await processMacCMSForLocal(entries, config.siteTimeoutMs);
     validEntries = result.passed;
     speedMap = result.speedMap;
