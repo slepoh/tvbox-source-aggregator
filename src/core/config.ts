@@ -63,6 +63,34 @@ export const KV_CHANNEL_PROBE_ENABLED = 'channel_probe_enabled';
 export const KV_CHANNEL_PROBE_STATUS = 'channel_probe_status';
 export const KV_CHANNEL_MERGED_TREE = 'channel_merged_tree'; // 最近一次合并的频道树（供 probe 使用）
 
+// 聚合日志
+export const KV_AGG_LOGS = 'agg_logs';
+export const AGG_LOGS_MAX = 50;
+export const KV_SITE_SNAPSHOT = 'site_snapshot';
+
+// 背景设置
+export const KV_BG_SETTINGS = 'bg_settings';
+
+// 分组排序
+export const KV_GROUP_ORDER = 'group_order';
+
+// 高级去重配置
+export const KV_DEDUP_CONFIG = 'dedup_config';
+
+// 直播禁用开关
+export const KV_LIVE_DISABLED = 'live_disabled';
+// 直播合并模式：'separated'（按源分类）| 'merged'（全部合并）
+export const KV_LIVE_MERGE_MODE = 'live_merge_mode';
+
+// 智能 Base URL
+export const BASE_URL_PLACEHOLDER = '{{BASE_URL}}';
+export const KV_SMART_BASE_URL_ENABLED = 'smart_base_url_enabled';
+
+// 站点验活
+export const KV_SITE_HEALTH_MAP = 'site_health_map';
+export const KV_SITE_PROBE_DEPTH = 'site_probe_depth'; // 'shallow' | 'deep'
+export const KV_SITE_AUTO_CLEAN = 'site_auto_clean';   // 'true' | 'false'
+
 // 频道测速 cron：每 12 小时
 export const CHANNEL_PROBE_CRON = '0 */12 * * *';
 // 并发与超时

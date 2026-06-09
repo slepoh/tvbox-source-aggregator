@@ -217,6 +217,40 @@ export interface SearchQuotaReport {
   truncated: number;            // 被截断数（maxSearchable > 0 时）
 }
 
+// ═══ 聚合日志 ══════════════════════════════════════════
+
+export interface AggLogFailedSource {
+  url: string;
+  name: string;
+  status: SourceFetchStatus;
+  errorMessage?: string;
+}
+
+export interface AggLogSiteChange {
+  key: string;
+  name?: string;
+}
+
+export interface AggregationLog {
+  id: string;
+  startTime: string;
+  endTime: string;
+  durationMs: number;
+  success: boolean;
+  errorMessage?: string;
+  totalSources: number;
+  okSources: number;
+  failedSources: AggLogFailedSource[];
+  addedSites: AggLogSiteChange[];
+  removedSites: AggLogSiteChange[];
+  finalSiteCount: number;
+  finalParseCount: number;
+  finalLiveCount: number;
+  blacklistRemovedSites: number;
+  blacklistRemovedParses: number;
+  blacklistRemovedLives: number;
+}
+
 // ═══ 直播频道级测速（方案 D+）══════════════════════════
 
 // URL → 延迟 ms 的映射（持久化到 KV_CHANNEL_SPEED_MAP）
@@ -226,6 +260,25 @@ export interface ChannelSpeedEntry {
   kind: 'm3u8' | 'ts' | 'tcp' | 'fail';
 }
 export type ChannelSpeedMap = Record<string, ChannelSpeedEntry>;
+
+// 站点验活健康记录
+export interface SiteHealthRecord {
+  key: string;
+  consecutiveFailures: number;
+  lastProbeTime: string;
+  lastProbeResult: 'ok' | 'empty' | 'error' | 'timeout';
+  lastSuccessTime?: string;
+}
+export type SiteHealthMap = Record<string, SiteHealthRecord>;
+
+// 正则黑名单规则
+export interface RegexRule {
+  id: string;
+  pattern: string;
+  field: 'name' | 'api' | 'key';
+  enabled: boolean;
+  createdAt: string;
+}
 
 // 频道测速任务状态
 export type ChannelProbeState = 'idle' | 'running' | 'done' | 'error';
